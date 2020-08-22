@@ -1,22 +1,12 @@
 class CategoriesController < ApplicationController
   skip_before_action :editor_required, only: [:index, :show]
-  before_action :set_category, only: [:edit, :update, :destroy]
+  before_action :set_selected_category, only: [:show, :edit, :update, :destroy]
   
-
   def index
-    if viewer_user
-      @categories = viewer_user.editor.categories
-    else
-      @categories = current_user.categories
-    end
+    @categories = set_my_categiories
   end
 
   def show
-    if viewer_user
-      @category = viewer_user.editor.categories.find(params[:id])
-    else
-      @category = current_user.categories.find(params[:id])
-    end
   end
 
   def new
@@ -24,10 +14,10 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    @category = current_user.categories.new(category_params)
+    @category = set_my_categiories.new(category_params)
 
     if @category.save
-    redirect_to @category, notice: "Todo「#{@category.name}」を登録しました。"      
+      redirect_to @category, notice: "Todo「#{@category.name}」を登録しました。"      
     else
       render :new
     end    
@@ -37,12 +27,12 @@ class CategoriesController < ApplicationController
   end
 
   def update
-    @category.update!(category_params)
+    @category.update(category_params)
     redirect_to todos_url, notice: "カテゴリ「#{category.name}」を編集しました。"
   end
 
   def destroy
-    @category.destroy
+    @category.destroy!
     redirect_to todos_url, notice: "カテゴリ「#{@category.name}」を削除しました。"
   end
 
@@ -51,8 +41,14 @@ class CategoriesController < ApplicationController
       params.require(:category).permit(:name)
     end
 
-    def set_category
-      @category = current_user.categories.find(params[:id])
+    # 関係するcategoriesをsetする独自メソッドを作成
+    def set_my_categiories
+      set_editor.categories
+    end
+
+    # 関係するcategoriesの中で、該当のcategoryをsetする独自メソッドを作成
+    def set_selected_category
+      @category = set_editor.categories.find(params[:id])
     end
 
 end

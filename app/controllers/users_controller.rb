@@ -1,11 +1,17 @@
 class UsersController < ApplicationController
+  # 未登録ユーザー => ユーザー作成のみできる
+  # viewer_user => このコントローラを使わない
+  # editor_user => newとcreateを除く5つのアクションを使っているが、実は全てviewer_userに関するもの
+
+  # 以上を踏まえて、newとcreateアクションのみにしてみた
+  # その他のアクションは、viewers_controllersに移動してみた（まあまあ大変だった笑）
+
+  # このままの設計だと、URLを直打ちすれば、viewer_userやeditor_userとしてログインしたまま新しくeditor_userが作成できる
+  # ただ、特段そのこと自体に問題がないので、そのアクションが使えるような設計にしておく
+  #（細かいこと言うなら、そのような場合も想定して、ログオフさせるようなコードを書いておいた方がいい？）
+
   skip_before_action :login_required, only: [:new, :create]
   skip_before_action :editor_required, only: [:new, :create]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-
-  def index
-    @users = editor_user.viewers
-  end
 
   def new
     @user = User.new
@@ -22,33 +28,9 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-  end
-
-  def show
-  end
-
-  def update
-    @user.update!(user_params)
-    redirect_to todos_url, notice: "ユーザー「#{@user.name}」を編集しました。"
-  end
-
-  def destroy
-    @user.destroy
-    redirect_to todos_url, notice: "ユーザー「#{@user.name}」を削除しました。"
-  end
-
-
   private
     def user_params
-      params.require(:user).permit(:name,:email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    def log_in(user)
-      session[:user_id] = user.id
-    end
 end

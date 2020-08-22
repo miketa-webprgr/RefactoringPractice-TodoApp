@@ -1,15 +1,16 @@
 h1 ユーザー一覧
+= link_to '閲覧者登録', new_viewer_path, class: 'btn btn-primary'
 
 .mb-3
 table.table.tablejover
-    thead.thead-default
-        tr
-            th= User.human_attribute_name(:name)
-            th
+  thead.thead-default
+    tr
+			th= User.human_attribute_name(:name)
+			th
     tbody
-        - @viewers.each do |viewer|
-            tr
-                td= link_to viewer.name, viewer
-                td
-                  = link_to '編集', edit_viewer_path(viewer), class:'btn btn-primary mr-3'
-                  = link_to '削除', viewer, method: :delete, date: { confirm: "ユーザー「#{viewer.name}」を削除します。よろしいですか？" }, class: 'btn btn-danger'
+			- @viewers.each do |viewer|
+				tr
+					td= link_to viewer.name, viewer_path(viewer)
+					td
+						= link_to '編集', edit_viewer_path(viewer), class:'btn btn-primary mr-3'
+						= link_to '削除', viewer_path(viewer), method: :delete, data: { confirm: "ユーザー「#{viewer.name}」を削除します。よろしいですか？" }, class: 'btn btn-danger'

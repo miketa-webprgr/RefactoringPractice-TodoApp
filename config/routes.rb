@@ -5,6 +5,6 @@ Rails.application.routes.draw do
   root 'todos#index'
   resources :todos
   resources :categories
-  resources :users
-  resources :viewers, only: [:new, :create]
+  resources :users, only: [:new, :create]
+  resources :viewers
 end

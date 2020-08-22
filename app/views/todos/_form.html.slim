@@ -12,5 +12,5 @@
     = f.text_area :description, row: 5, class: 'form-control', id: 'todo_description'
   .form-group
     = f.label :category_id
-    = f.collection_select :category_id, Category.all, :id, :name, :include_blank => true
+    = f.collection_select :category_id, Category.all, :id, :name, {:include_blank => true}, class: 'form-control'
   = f.submit nil, class: 'btn btn-primary'

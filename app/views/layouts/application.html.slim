@@ -9,7 +9,7 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"
-     
+
 
   body
     .app-title.navbar.navbar-expand-md.navbar-light.bg-light
@@ -19,7 +19,7 @@ html
         - if editor_user
           li.nav-item= link_to 'Todo一覧', todos_path, class: 'nav-link'
           li.nav-item= link_to 'カテゴリ一覧', categories_path, class: 'nav-link'
-          li.nav-item= link_to '管理者権限', users_path, class: 'nav-link'
+          li.nav-item= link_to '管理者権限', viewers_path, class: 'nav-link'
           li.nav-item= link_to 'ログアウト', logout_path, method: :delete, class: 'nav-link'
         - elsif viewer_user
           li.nav-item= link_to 'Todo一覧', todos_path, class: 'nav-link'

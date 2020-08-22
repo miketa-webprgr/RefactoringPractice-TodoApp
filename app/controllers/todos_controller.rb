@@ -1,23 +1,13 @@
 class TodosController < ApplicationController
   skip_before_action :editor_required, only: [:index, :show]
-  before_action :set_todo, only: [:edit, :update, :destroy]
+  before_action :set_selected_todo, only: [:show, :edit, :update, :destroy]
 
   def index
-    if viewer_user
-      @q = viewer_user.editor.todos.order(created_at: :desc).ransack(params[:q])
-      @todos = @q.result(distinct: true).page(params[:page]).per(15)
-    else
-      @q = current_user.todos.order(created_at: :desc).ransack(params[:q])
-      @todos = @q.result(distinct: true).page(params[:page]).per(15)
-    end
+    @q = set_my_todos.order(created_at: :desc).ransack(params[:q])
+    @todos = @q.result(distinct: true).page(params[:page]).per(15)
   end
 
   def show
-    if viewer_user
-      @todo = viewer_user.editor.todos.find(params[:id])
-    else
-      @todo = current_user.todos.find(params[:id])
-    end
   end
 
   def new
@@ -25,10 +15,10 @@ class TodosController < ApplicationController
   end
 
   def create
-    @todo = current_user.todos.new(todo_params)
+    @todo = set_my_todos.new(todo_params)
 
     if @todo.save
-    redirect_to @todo, notice: "Todo「#{@todo.name}」を登録しました。"      
+      redirect_to @todo, notice: "Todo「#{@todo.name}」を登録しました。"
     else
       render :new
     end    
@@ -38,12 +28,12 @@ class TodosController < ApplicationController
   end
 
   def update
-    @todo.update!(todo_params)
+    @todo.update(todo_params)
     redirect_to todos_url, notice: "Todo「#{@todo.name}」を編集しました。"
   end
 
   def destroy
-    @todo.destroy
+    @todo.destroy!
     redirect_to todos_url, notice: "Todo「#{@todo.name}」を削除しました。"
   end
 
@@ -52,8 +42,14 @@ class TodosController < ApplicationController
     def todo_params
       params.require(:todo).permit(:name, :description, :category_id)
     end
-    
-    def set_todo
-      @todo = current_user.todos.find(params[:id])
+
+    # 関係するcategoriesをsetする独自メソッドを作成
+    def set_my_todos
+      set_editor.todos
+    end
+
+    # 関係するtodosの中で、該当のtodoをsetする独自メソッドを作成
+    def set_selected_todo
+      @todo = set_my_todos.find(params[:id])
     end
 end

@@ -1,0 +1,17 @@
+h1 ユーザー詳細
+
+.nav.justify-content-end
+  = link_to '一覧', viewers_path, class: 'nav-link'
+
+table.table.table-hover
+  tbody
+    tr
+      th= User.human_attribute_name(:name)
+      td= @viewer.name
+    tr
+      th= User.human_attribute_name(:email)
+      td= @viewer.email
+
+= link_to '編集', edit_viewer_path(@viewer), class:'btn btn-primary mr-3'
+= link_to '削除', viewer_path(@viewer), method: :delete, data: { confirm: "ユーザー「#{@viewer.name}」を削除します。よろしいですか？" }, class: 'btn btn-danger'
+

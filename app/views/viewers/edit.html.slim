@@ -1,11 +1,11 @@
-h1 閲覧者登録
+h1 ユーザー編集
 
 - if @viewer.errors.present?
   ul#error_explanation
     - @viewer.errors.full_messages.each do |message|
       li = message
 
-= form_with model: @viewer, scope: :viewer, url: viewers_path, local: true do |f|
+= form_with model: @viewer, scope: :viewer, method: :patch, url: viewer_path(@viewer), local: true do |f|
   .form-group
     = f.label :name
     = f.text_field :name, class: 'form-control', id: 'viewer_name'
