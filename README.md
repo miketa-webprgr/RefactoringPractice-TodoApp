@@ -11,6 +11,9 @@ https://morning-sierra-80148.herokuapp.com
 
 ## 変更点
 
+[変更内容はcommitログから](https://github.com/miketa-webprgr/RefactoringPractice-TodoApp/commit/76c2ee383b393b3f8653a669c42c2f24e69f370b)  
+（ただし、変更内容を全てまとめてcommitしているため、非常に見辛いです）  
+
 ### `users_controller.rb`と`viewers_controller.rb`の大幅なリファクタリング
 
 `users_controller`について、勘違いしていなければ、newとcreateアクション以外は、  
