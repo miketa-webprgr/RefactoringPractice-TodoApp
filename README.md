@@ -17,7 +17,7 @@ https://morning-sierra-80148.herokuapp.com
 ### `users_controller.rb`と`viewers_controller.rb`の大幅なリファクタリング
 
 `users_controller`について、勘違いしていなければ、newとcreateアクション以外は、  
-あくまでeditor_user（親）がviewer_user（子）を作る時にしか使っていなかったので、  
+あくまで`editor_user`（親）が`viewer_user`（子）を作る時にしか使っていなかったので、  
 思い切って、`viewers_controller.rb`に移行しました。（そちらの方が自然な気がしたので）  
 
 これがなかなか大変でした笑  
@@ -40,7 +40,7 @@ https://morning-sierra-80148.herokuapp.com
 ```rb
 # todos_controller.rb
 
-  # 関係するcategoriesをsetする独自メソッドを作成
+  # 関係するtodosをsetする独自メソッドを作成
   def set_my_todos
     set_editor.todos
   end
@@ -85,4 +85,4 @@ https://morning-sierra-80148.herokuapp.com
 ### log_inメソッドをコントローラに寄せた
 
 書いているとおりです。  
-また、session_controllers内で、log_inメソッドに置き換えられるところを置き換えました。  
+また、`session_controllers`内で、`log_in`メソッドに置き換えられるところを置き換えました。  

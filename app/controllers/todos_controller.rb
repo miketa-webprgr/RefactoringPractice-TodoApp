@@ -43,7 +43,7 @@ class TodosController < ApplicationController
       params.require(:todo).permit(:name, :description, :category_id)
     end
 
-    # 関係するcategoriesをsetする独自メソッドを作成
+    # 関係するtodosをsetする独自メソッドを作成
     def set_my_todos
       set_editor.todos
     end
